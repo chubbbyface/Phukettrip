@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#E9F8F6">
+<title>布吉島 5日4夜 自由行</title>
+<script>
+  /* Apply saved theme before first paint to avoid a light/dark flash */
+  try { var t = localStorage.getItem('phuket_theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<style>
+:root{
+  --bg:#E9F8F6; --surface:#FFFFFF; --surface-2:#F3FBFA; --text:#17302E; --muted:#4E6A67; --border:#CFE5E2;
+  --primary:#FF9F1C; --on-primary:#2B1700; --primary-ink:#9A5200; --primary-soft:#FFF1DC;
+  --accent:#2EC4B6; --on-accent:#08312E; --accent-ink:#0B6F66; --accent-soft:#D8F5F2;
+  --danger:#B3261E; --ok:#1B7F4B; --ok-soft:#DDF4E7;
+  --shadow:0 1px 2px rgba(19,42,41,.08),0 6px 16px rgba(19,42,41,.06);
+  --r:16px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F2221; --surface:#1A3532; --surface-2:#15302D; --text:#EAF7F5; --muted:#A9C6C2; --border:#2D4C48;
+    --primary-ink:#FFBF69; --primary-soft:#3A2C14; --accent-ink:#5ED8CC; --accent-soft:#17403C;
+    --danger:#FF9A92; --ok:#6FDDA1; --ok-soft:#173D2B; --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F2221; --surface:#1A3532; --surface-2:#15302D; --text:#EAF7F5; --muted:#A9C6C2; --border:#2D4C48;
+  --primary-ink:#FFBF69; --primary-soft:#3A2C14; --accent-ink:#5ED8CC; --accent-soft:#17403C;
+  --danger:#FF9A92; --ok:#6FDDA1; --ok-soft:#173D2B; --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);line-height:1.5;font-size:15px;
+  font-family:"Noto Sans HK","PingFang HK","Microsoft JhengHei","Heiti TC",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent-ink);outline-offset:2px;border-radius:8px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--surface);padding:8px 12px;border-radius:8px;z-index:100}
+.skip:focus{left:8px}
+
+/* ---------- Layout ---------- */
+.topbar{
+  position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--surface) 92%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border);
+  padding:calc(env(safe-area-inset-top) + 8px) 14px 8px;
+}
+.topbar-in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.brand{flex:1;min-width:0}
+.brand h1{margin:0;font-size:16px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sync{display:inline-flex;align-items:center;gap:6px;margin-top:2px;padding:0;border:0;background:none;font-size:12px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.sync[data-s="online"] .dot{background:var(--ok)}
+.sync[data-s="connecting"] .dot{background:var(--primary);animation:pulse 1.2s infinite}
+.sync[data-s="offline"] .dot{background:var(--danger)}
+@keyframes pulse{50%{opacity:.35}}
+.iconbtn{
+  width:44px;height:44px;display:grid;place-items:center;border-radius:12px;
+  border:1px solid var(--border);background:var(--surface-2);
+}
+.iconbtn svg{width:20px;height:20px}
+main{max-width:520px;margin:0 auto;padding:14px 14px calc(96px + env(safe-area-inset-bottom))}
+.tab{display:grid;gap:12px}
+
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabbar-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
+.tabbar button{
+  background:none;border:0;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;font-size:11px;font-weight:600;color:var(--muted);position:relative;
+}
+.tabbar svg{width:22px;height:22px}
+.tabbar button[aria-current="page"]{color:var(--primary-ink)}
+.tabbar button[aria-current="page"]::before{
+  content:"";position:absolute;top:0;width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--primary);
+}
+
+/* ---------- Components ---------- */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
+.card h2,.card h3{margin:0}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sec-head h2{font-size:17px;margin:0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.btn{
+  min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);
+  font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:var(--text);
+}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.sm{min-height:40px;padding:0 12px;font-size:14px}
+.btn.danger{color:var(--danger)}
+.btn.block{width:100%}
+.btn:active{transform:scale(.98)}
+.row{display:flex;gap:8px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grow{flex:1}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);font-weight:700;font-size:14px}
+.avatar{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#102;font-weight:800}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;background:var(--accent-soft);color:var(--accent-ink)}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.badge.warn{background:var(--primary-soft);color:var(--primary-ink)}
+.empty{text-align:center;padding:28px 12px;color:var(--muted);font-size:14px;border:1.5px dashed var(--border);border-radius:var(--r)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:10px}
+.kv dt{font-size:12px;color:var(--muted)} .kv dd{margin:0;font-weight:700;overflow-wrap:anywhere}
+.kv .full{grid-column:1/-1}
+
+/* Hero */
+.hero{text-align:center;background:linear-gradient(180deg,var(--primary-soft),var(--surface) 60%)}
+.hero svg{width:100%;max-height:150px}
+.hero h2{font-size:22px;margin-top:2px}
+.countdown{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.cd{min-width:62px;padding:8px 6px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+.cd b{display:block;font-size:22px;font-variant-numeric:tabular-nums;color:var(--primary-ink);line-height:1.1}
+.cd span{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{padding:12px;border-radius:14px;background:var(--surface);border:1px solid var(--border)}
+.stat b{display:block;font-size:19px}
+.wave{animation:wave 6s ease-in-out infinite}
+.boat{animation:float 4s ease-in-out infinite}
+@keyframes wave{50%{transform:translateX(-12px)}}
+@keyframes float{50%{transform:translateY(-5px) rotate(1.5deg)}}
+
+/* Day picker + timeline */
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:var(--surface);padding:6px;border:1px solid var(--border);border-radius:14px}
+.days button{min-height:52px;border:0;border-radius:10px;background:none;font-weight:700;line-height:1.2;color:var(--muted)}
+.days button small{display:block;font-weight:600;font-size:12px}
+.days button[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+.timeline{list-style:none;margin:0;padding:0 0 0 26px;position:relative;display:grid;gap:10px}
+.timeline::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl{position:relative}
+.tl::before{content:"";position:absolute;left:-23px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px var(--bg)}
+.time{font-size:18px;font-weight:800;color:var(--primary-ink);font-variant-numeric:tabular-nums}
+.tl h3{font-size:16px;margin:2px 0}
+.tl p{margin:2px 0 8px;color:var(--muted);font-size:14px}
+.actions{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:8px;margin-top:6px}
+.actions .push{margin-left:auto}
+
+.subtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.subtabs::-webkit-scrollbar{display:none}
+.subtabs button{white-space:nowrap;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-weight:700;font-size:14px}
+.subtabs button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+
+/* Expenses */
+.split-row{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.split-row:last-child{border:0}
+.pos{color:var(--ok);font-weight:700}.neg{color:var(--danger);font-weight:700}
+.exp{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.amt{font-weight:800;text-align:right;white-space:nowrap}
+.progress{height:10px;border-radius:99px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .3s}
+
+/* Checklist */
+.todo{display:flex;align-items:center;gap:10px;min-height:44px}
+.todo input{width:22px;height:22px;accent-color:var(--accent-ink);flex:none}
+.todo label{flex:1;display:flex;gap:8px;align-items:center;cursor:pointer}
+.todo .done{text-decoration:line-through;color:var(--muted)}
+.tag{font-size:12px;padding:1px 8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+
+/* Forms */
+input[type=text],input[type=number],input[type=time],input[type=datetime-local],select,textarea{
+  width:100%;min-height:44px;padding:9px 12px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);font-size:16px;
+}
+textarea{resize:vertical}
+.field label,fieldset legend{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px;padding:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{grid-column:1/-1}.field.half{grid-column:auto}
+fieldset{grid-column:1/-1}
+.checks{display:flex;flex-wrap:wrap;gap:6px}
+.check{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);font-size:14px;font-weight:600}
+.check input{accent-color:var(--accent-ink);width:18px;height:18px}
+
+dialog{
+  width:min(440px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--border);border-radius:20px;
+  background:var(--surface);color:var(--text);box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+dialog::backdrop{background:rgba(8,24,23,.55);backdrop-filter:blur(2px)}
+.dlg-body{padding:16px;display:grid;gap:14px}
+.dlg-body h2{margin:0;font-size:18px}
+.dlg-foot{position:sticky;bottom:0;display:flex;gap:8px;padding:12px 16px;background:var(--surface);border-top:1px solid var(--border)}
+.dlg-foot .btn{flex:1}
+
+.toast{
+  position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:#17302E;color:#fff;padding:10px 14px;border-radius:12px;display:flex;gap:12px;align-items:center;z-index:60;
+  max-width:calc(100vw - 28px);font-size:14px;transition:.2s;
+}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{background:none;border:0;color:#FFBF69;font-weight:800;min-height:32px;padding:0 4px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#app">跳到主要內容</a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <h1>🏝️ 布吉島 5日4夜</h1>
+      <button class="sync" id="sync" data-act="sync-info" data-s="local" type="button"><span class="dot"></span><span id="sync-text">本機模式</span></button>
+    </div>
+    <button class="iconbtn" data-act="share" type="button" aria-label="分享連結"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+    <button class="iconbtn" data-act="theme" type="button" aria-label="切換深色／淺色模式"><svg id="ico-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+  </div>
+</header>
+
+<main id="app" tabindex="-1">
+  <noscript>此頁面需要啟用 JavaScript。</noscript>
+
+  <!-- HOME -->
+  <section id="tab-home" class="tab">
+    <div class="card hero">
+      <svg viewBox="0 0 320 120" fill="none" aria-hidden="true">
+        <circle cx="160" cy="52" r="36" style="fill:var(--primary)" opacity=".7"/>
+        <path d="M120 88C125 58 140 42 155 47S180 66 195 88Z" style="fill:var(--accent)" />
+        <path d="M185 88C190 68 205 58 215 88Z" style="fill:var(--primary)" opacity=".8"/>
+        <g class="wave"><path d="M-10 86C40 81 80 91 130 86S220 91 270 86 330 89 350 86V120H-10Z" style="fill:var(--accent)" opacity=".35"/></g>
+        <path d="M-10 94C50 90 100 97 160 94S260 97 330 94V120H-10Z" style="fill:var(--accent)" opacity=".7"/>
+        <path d="M45 92Q50 64 55 44" stroke="var(--text)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M55 44Q35 40 25 47M55 44Q65 32 75 40M55 44Q65 54 70 60M55 44Q40 52 35 57" stroke="var(--accent-ink)" stroke-width="2.5" stroke-linecap="round"/>
+        <g class="boat"><path d="M220 86Q240 86 255 80L250 90H215Z" style="fill:var(--primary)" stroke="var(--text)" stroke-width="1.5"/><path d="M250 80L265 72" stroke="var(--text)" stroke-width="1.5"/></g>
+      </svg>
+      <h2>普吉島度假行程</h2>
+      <p class="muted small" style="margin:2px 0 0">2026年11月29日（日）– 12月3日（四）・5日4夜</p>
+      <div id="cd-wrap"></div>
+    </div>
+
+    <div class="stats" id="home-stats"></div>
+
+    <div class="card" id="home-today"></div>
+
+    <div class="card">
+      <div class="sec-head"><h3 style="font-size:15px">👥 同行團員（6 人）</h3></div>
+      <div class="row wrap" id="travelers" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- HOTEL -->
+  <section id="tab-hotel" class="tab" hidden>
+    <div class="sec-head"><h2>🏨 酒店住宿</h2><button class="btn primary sm" data-act="add" data-sec="hotels" type="button">＋ 新增</button></div>
+    <div id="hotel-list" class="tab"></div>
+  </section>
+
+  <!-- ITINERARY -->
+  <section id="tab-itinerary" class="tab" hidden>
+    <div class="days" id="day-picker" role="group" aria-label="選擇日期"></div>
+    <div class="sec-head"><h2 id="day-title" style="font-size:16px"></h2><button class="btn primary sm" data-act="add" data-sec="itinerary" type="button">＋ 新增</button></div>
+    <ol id="itinerary-list" class="timeline"></ol>
+  </section>
+
+  <!-- BACKUP -->
+  <section id="tab-backup" class="tab" hidden>
+    <div class="sec-head"><h2>📌 備選地點</h2><button class="btn accent sm" data-act="add" data-sec="backup" type="button">＋ 新增</button></div>
+    <div class="subtabs" id="backup-tabs" role="group" aria-label="分類"></div>
+    <div id="backup-list" class="tab"></div>
+  </section>
+
+  <!-- EXPENSES -->
+  <section id="tab-expenses" class="tab" hidden>
+    <div class="sec-head"><h2>💰 記帳與分帳</h2><button class="btn primary sm" data-act="add" data-sec="expenses" type="button">＋ 新增支出</button></div>
+    <div class="card" id="expense-summary"></div>
+    <div class="sec-head"><h3 style="font-size:15px">消費明細</h3><button class="btn sm" data-act="csv" type="button">匯出 CSV</button></div>
+    <div id="expense-list" class="tab"></div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section id="tab-checklist" class="tab" hidden>
+    <div class="card">
+      <div class="sec-head"><h2>✅ 待辦與購物清單</h2><span id="todo-count" class="badge"></span></div>
+      <div class="progress" style="margin-top:10px" role="progressbar" aria-label="完成進度" id="todo-bar-wrap"><i id="todo-bar" style="width:0"></i></div>
+    </div>
+    <form id="todo-form" class="card" style="display:grid;gap:8px">
+      <label class="small muted" for="todo-text" style="font-weight:700">新增項目</label>
+      <input type="text" id="todo-text" placeholder="例如：換泰銖、買防曬乳" autocomplete="off" required>
+      <div class="row">
+        <select id="todo-cat" class="grow" aria-label="分類"></select>
+        <select id="todo-who" class="grow" aria-label="負責人"></select>
+      </div>
+      <button class="btn accent block" type="submit">新增</button>
+    </form>
+    <div id="todo-list" class="tab"></div>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="主選單"><div class="tabbar-in" id="tabbar"></div></nav>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <form id="dlg-form" method="dialog">
+    <div class="dlg-body">
+      <h2 id="dlg-title"></h2>
+      <div class="fgrid" id="dlg-fields"></div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn" type="button" data-act="close-dlg">取消</button>
+      <button class="btn primary" type="submit">儲存</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button type="button" id="toast-undo" hidden>復原</button></div>
+
+<script type="module">
+/* =====================================================================
+   CONFIG
+   Realtime sync needs a Firestore project. Paste your own Firebase web
+   config below (or leave null to run in local-only mode). Platforms that
+   inject __firebase_config / __app_id / __initial_auth_token are honoured.
+   ===================================================================== */
+const OWN_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCst9N1z12VBPxlX-Mbd0kz3AgMw6cSkx4",
+  authDomain: "phuket2026-4ca17.firebaseapp.com",
+  projectId: "phuket2026-4ca17",
+  storageBucket: "phuket2026-4ca17.firebasestorage.app",
+  messagingSenderId: "879508081471",
+  appId: "1:879508081471:web:455317cef5bcd06a91618a"
+};
+const CONFIG = {
+  firebase: typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : OWN_FIREBASE_CONFIG,
+  appId:    typeof __app_id !== 'undefined' ? __app_id : 'phuket-trip-2026',
+  token:    typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null,
+};
+const FB = '11.6.1';
+
+const TRAVELERS = ['Sukie','Jason','Matthew','Woody','Horace','Carmen'];
+const TRIP_START = new Date('2026-11-29T00:00:00+08:00');
+const DAYS = [
+  { n:1, date:'11/29', wd:'日', title:'抵達布吉 & 渡假村放鬆' },
+  { n:2, date:'11/30', wd:'一', title:'皮皮島跳島浮潛' },
+  { n:3, date:'12/01', wd:'二', title:'神仙半島夕陽與海景' },
+  { n:4, date:'12/02', wd:'三', title:'泰式 SPA 與放鬆' },
+  { n:5, date:'12/03', wd:'四', title:'布吉老街與返港' },
+];
+const TRANSPORT = { '包車/Grab':'🚗', '快艇/船':'🚤', '步行':'🚶', '飛機':'✈️' };
+const EXP_CAT   = { '餐飲':'🍹', '住宿':'🏨', '交通':'🚗', '跳島水上':'🚤', '購物':'🛍️', '按摩SPA':'💆', '其他':'🧾' };
+const TODO_CAT  = { '證件文件':'📄', '海邊與行程':'🥽', '預約事項':'📅', '購物買物':'🛍️' };
+const BACKUP_CAT = { attractions:'🏝️ 景點／跳島', restaurants:'🍹 餐廳／酒吧', shopping:'🛍️ 夜市／按摩' };
+const STATUS = ['已付款','現場付款','待確認'];
+
+/* ---------- Seed data (sample — edit or delete freely) ---------- */
+const seed = () => ({
+  hotels: [{ id:'h1', name:'The Nai Harn, Phuket', checkin:'2026-11-29T15:00', checkout:'2026-12-03T12:00',
+    address:'Viset Road, Rawai, Phuket', price:'HK$ 1,350 / 晚', status:'已付款', notes:'（範例）Agoda Ref: PKT882910', map:'The Nai Harn Phuket' }],
+  itinerary: [
+    { id:'i1', day:1, time:'14:30', title:'抵達布吉國際機場 (HKT)', transport:'包車/Grab', desc:'提領行李、辦理 SIM 卡，搭乘預約包車前往渡假村 Check-in。', map:'Phuket International Airport' },
+    { id:'i2', day:1, time:'18:00', title:'芭東海灘日落 & 夜市晚餐', transport:'包車/Grab', desc:'芭東夜市小吃、海鮮大餐、享受海邊夕陽。', map:'Patong Beach' },
+    { id:'i3', day:2, time:'08:00', title:'皮皮島一日跳島浮潛', transport:'快艇/船', desc:'瑪雅灣 (Maya Bay)、瑪瑙島浮潛，探索珊瑚礁。', map:'Phi Phi Islands' },
+    { id:'i4', day:3, time:'16:00', title:'神仙半島 (Promthep Cape) 日落', transport:'包車/Grab', desc:'布吉最美的日落觀景台，拍照打卡絕佳。', map:'Promthep Cape' },
+    { id:'i5', day:4, time:'15:00', title:'泰式按摩 SPA', transport:'步行', desc:'預約 Let’s Relax 或 Sukko Spa，舒緩跳島後的疲勞。', map:'Lets Relax Spa Phuket' },
+    { id:'i6', day:5, time:'11:00', title:'退房 & 寄存行李', transport:'步行', desc:'酒店 12:00 前退房，可請櫃檯寄存行李。', map:'The Nai Harn Phuket' },
+    { id:'i7', day:5, time:'13:00', title:'布吉老街巡禮與買物', transport:'包車/Grab', desc:'彩色葡式建築打卡、買伴手禮、喝精品咖啡。', map:'Phuket Old Town' },
+    { id:'i8', day:5, time:'18:00', title:'前往機場（航班時間請自行填寫）', transport:'包車/Grab', desc:'建議起飛前 3 小時抵達機場。', map:'Phuket International Airport' },
+  ],
+  backup: [
+    { id:'b1', type:'attractions', name:'斯米蘭群島 (Similan)', desc:'頂級玻璃海浮潛天堂，通常只在乾季開放。', address:'Phang Nga', map:'Similan Islands' },
+    { id:'b2', type:'restaurants', name:'Three Monkeys Restaurant', desc:'叢林樹屋風格餐廳，氣氛極佳。', address:'Rawai, Phuket', map:'Three Monkeys Restaurant Phuket' },
+    { id:'b3', type:'shopping',    name:'Central Phuket', desc:'布吉最大型商場，精品與美食街一應俱全。', address:'Wichit, Phuket', map:'Central Phuket' },
+  ],
+  expenses: [
+    { id:'e1', title:'渡假村房費訂金', amount:4050, currency:'HKD', payer:'Horace', category:'住宿', split:[...TRAVELERS] },
+    { id:'e2', title:'皮皮島快艇包船', amount:12000, currency:'THB', payer:'Jason', category:'跳島水上', split:[...TRAVELERS] },
+  ],
+  checklist: [
+    { id:'c1', text:'護照（有效期超過 6 個月）', category:'證件文件', assignee:'全體', completed:true },
+    { id:'c2', text:'防曬乳 & 浮潛面鏡、水母衣', category:'海邊與行程', assignee:'全體', completed:false },
+    { id:'c3', text:'預約機場往返包車', category:'預約事項', assignee:'Sukie', completed:true },
+  ],
+  settings: { rate: 4.5 },
+});
+const SECTIONS = ['hotels','itinerary','backup','expenses','checklist','settings'];
+
+/* ---------- Form schema (drives add / edit dialogs for every list) ---------- */
+const opts = (o) => Object.entries(o).map(([k,v]) => [k, `${v} ${k}`]);
+const SCHEMA = {
+  hotels: { label:'酒店', fields:[
+    { k:'name', l:'酒店名稱', t:'text', req:true, ph:'例如：The Nai Harn' },
+    { k:'checkin',  l:'入住 Check-in',  t:'datetime-local', half:true, def:'2026-11-29T15:00' },
+    { k:'checkout', l:'退房 Check-out', t:'datetime-local', half:true, def:'2026-12-03T12:00' },
+    { k:'address', l:'地址', t:'text' },
+    { k:'price',  l:'房價／總價', t:'text', half:true, ph:'HK$ 1,350 / 晚' },
+    { k:'status', l:'付款狀態', t:'select', half:true, opts:STATUS.map(s=>[s,s]), def:'待確認' },
+    { k:'notes', l:'預訂編號／備註', t:'text' },
+    { k:'map', l:'Google Maps 搜尋字', t:'text', ph:'留空則使用酒店名稱' },
+  ]},
+  itinerary: { label:'行程', fields:[
+    { k:'day', l:'日期', t:'select', half:true, opts:DAYS.map(d=>[d.n,`Day ${d.n}（${d.date}）`]), def:()=>state_.day },
+    { k:'time', l:'時間', t:'time', half:true, req:true, def:'12:00' },
+    { k:'title', l:'景點／餐廳／活動', t:'text', req:true },
+    { k:'transport', l:'交通方式', t:'select', opts:opts(TRANSPORT), def:'包車/Grab' },
+    { k:'desc', l:'簡介與備註', t:'textarea' },
+    { k:'map', l:'Google Maps 搜尋字', t:'text', ph:'留空則使用名稱' },
+  ]},
+  backup: { label:'備選地點', fields:[
+    { k:'type', l:'分類', t:'select', opts:Object.entries(BACKUP_CAT), def:()=>state_.sub },
+    { k:'name', l:'名稱', t:'text', req:true },
+    { k:'desc', l:'簡介', t:'textarea' },
+    { k:'address', l:'地區', t:'text', def:'布吉島' },
+    { k:'map', l:'Google Maps 搜尋字', t:'text' },
+  ]},
+  expenses: { label:'支出', fields:[
+    { k:'title', l:'項目', t:'text', req:true, ph:'例如：芭東海鮮晚餐' },
+    { k:'amount', l:'金額', t:'number', req:true, half:true },
+    { k:'currency', l:'幣別', t:'select', half:true, opts:[['HKD','HKD 港幣'],['THB','THB 泰銖']], def:'THB' },
+    { k:'payer', l:'先付款人', t:'select', half:true, opts:TRAVELERS.map(t=>[t,t]) },
+    { k:'category', l:'分類', t:'select', half:true, opts:opts(EXP_CAT), def:'餐飲' },
+    { k:'split', l:'分攤成員（至少選一位）', t:'people', def:()=>[...TRAVELERS] },
+  ]},
+};
+
+/* =====================================================================
+   STATE & PERSISTENCE
+   ===================================================================== */
+const $  = (s, r=document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => (crypto.randomUUID ? crypto.randomUUID().slice(0,8) : Date.now().toString(36) + Math.random().toString(36).slice(2,6));
+const mapLink = (q) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+
+/* Room id lives in the URL hash so the group shares one link (#room=abc123) */
+const ROOM = (() => {
+  const m = location.hash.match(/room=([\w-]+)/);
+  if (m) return m[1];
+  const r = Math.random().toString(36).slice(2, 8);
+  history.replaceState(null, '', `${location.pathname}${location.search}#room=${r}`);
+  return r;
+})();
+const LS_KEY = `phuket2026:${ROOM}`;
+
+const state_ = { day:1, sub:'attractions', tab:'home' };   // UI state (not synced)
+let state = load();
+const broadcast = 'BroadcastChannel' in window ? new BroadcastChannel(`phuket-${ROOM}`) : null;
+
+function load() {
+  const base = seed();
+  try {
+    const s = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+    if (s) for (const k of SECTIONS) if (s[k] !== undefined) base[k] = s[k];
+  } catch {}
+  return base;
+}
+function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {} }
+
+let cloud = null;                         // { db, fs } once connected
+const seeded = {};
+function persist(sec) {
+  saveLocal();
+  broadcast?.postMessage({ sec, value: state[sec] });
+  pushCloud(sec);
+  renderAll();
+}
+function pushCloud(sec) {
+  if (!cloud) return;
+  const { db, fs } = cloud;
+  fs.setDoc(fs.doc(db, 'artifacts', CONFIG.appId, 'public', 'data', `trip-${ROOM}`, sec),
+    { json: JSON.stringify(state[sec]), updatedAt: Date.now() })
+    .catch(() => setSync('offline'));
+}
+if (broadcast) broadcast.onmessage = (e) => {
+  const { sec, value } = e.data || {};
+  if (!SECTIONS.includes(sec)) return;
+  state[sec] = value; saveLocal(); renderAll();
+};
+
+/* ---------- Sync status (honest: only "online" when really connected) ---------- */
+function setSync(s) {
+  const el = $('#sync'); el.dataset.s = s;
+  $('#sync-text').textContent = { local:'本機模式', connecting:'連線中…', online:'雲端同步中', offline:'離線（連線後自動同步）' }[s];
+}
+async function initCloud() {
+  if (!CONFIG.firebase) return setSync('local');
+  setSync('connecting');
+  try {
+    const base = `https://www.gstatic.com/firebasejs/${FB}`;
+    const [app, auth, fs] = await Promise.all([
+      import(`${base}/firebase-app.js`), import(`${base}/firebase-auth.js`), import(`${base}/firebase-firestore.js`)]);
+    const a = app.initializeApp(CONFIG.firebase);
+    const au = auth.getAuth(a);
+    if (CONFIG.token) await auth.signInWithCustomToken(au, CONFIG.token); else await auth.signInAnonymously(au);
+    const db = fs.getFirestore(a);
+    cloud = { db, fs };
+    for (const sec of SECTIONS) {
+      const ref = fs.doc(db, 'artifacts', CONFIG.appId, 'public', 'data', `trip-${ROOM}`, sec);
+      fs.onSnapshot(ref, (snap) => {
+        if (snap.metadata.hasPendingWrites) return;          // ignore echo of our own writes
+        setSync('online');
+        if (!snap.exists()) {                                // first person in the room publishes the seed
+          if (!seeded[sec]) { seeded[sec] = true; pushCloud(sec); }
+          return;
+        }
+        try {
+          const v = JSON.parse(snap.data().json);
+          if (JSON.stringify(v) !== JSON.stringify(state[sec])) { state[sec] = v; saveLocal(); renderAll(); }
+        } catch (e) { console.warn('bad snapshot', sec, e); }
+      }, () => setSync('offline'));
+    }
+  } catch (e) { console.warn('Cloud sync unavailable:', e); setSync('local'); }
+}
+addEventListener('online',  () => cloud && setSync('online'));
+addEventListener('offline', () => cloud && setSync('offline'));
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+const WD = ['日','一','二','三','四','五','六'];
+function fmtDT(v) {
+  if (!v) return '—';
+  const [d, t = ''] = v.split('T'); const [y, m, da] = d.split('-').map(Number);
+  if (!y) return esc(v);
+  return `${m}/${da}（${WD[new Date(y, m-1, da).getDay()]}）${t.slice(0,5)}`;
+}
+function nights(a, b) {
+  if (!a || !b) return 0;
+  const p = (s) => { const [y,m,d] = s.split('T')[0].split('-').map(Number); return Date.UTC(y, m-1, d); };
+  return Math.max(0, Math.round((p(b) - p(a)) / 864e5));
+}
+const toHKD = (e) => e.currency === 'HKD' ? +e.amount || 0 : (+e.amount || 0) / (state.settings.rate || 4.5);
+const money = (n, c) => (c === 'HKD' ? 'HK$ ' : '฿ ') + Math.round(n).toLocaleString('en-US');
+const tripDay = () => { const d = Math.floor((Date.now() - TRIP_START) / 864e5) + 1; return d >= 1 && d <= 5 ? d : 0; };
+const avatar = (name) => { const i = TRAVELERS.indexOf(name); return `<span class="avatar" style="background:hsl(${(i < 0 ? 0 : i) * 55 + 20} 80% 75%)">${esc(name[0] || '?')}</span>`; };
+const byTime = (a, b) => (a.time || '').localeCompare(b.time || '');
+
+/* Settlement: who pays whom, using per-expense participants */
+function settle() {
+  const net = Object.fromEntries(TRAVELERS.map(t => [t, 0]));
+  const paid = { ...net }, share = { ...net };
+  let total = 0;
+  for (const e of state.expenses) {
+    const hkd = toHKD(e); total += hkd;
+    const who = e.split?.length ? e.split : TRAVELERS;
+    const each = hkd / who.length;
+    net[e.payer] = (net[e.payer] || 0) + hkd;  paid[e.payer] = (paid[e.payer] || 0) + hkd;
+    who.forEach(p => { net[p] = (net[p] || 0) - each; share[p] = (share[p] || 0) + each; });
+  }
+  const cr = [], db = [];
+  for (const [p, v] of Object.entries(net)) { if (v > 0.5) cr.push({ p, v }); else if (v < -0.5) db.push({ p, v: -v }); }
+  cr.sort((a, b) => b.v - a.v); db.sort((a, b) => b.v - a.v);
+  const transfers = []; let i = 0, j = 0;
+  while (i < db.length && j < cr.length) {
+    const x = Math.min(db[i].v, cr[j].v);
+    transfers.push({ from: db[i].p, to: cr[j].p, amt: x });
+    db[i].v -= x; cr[j].v -= x;
+    if (db[i].v < 0.5) i++; if (cr[j].v < 0.5) j++;
+  }
+  return { net, paid, share, total, transfers };
+}
+
+/* =====================================================================
+   RENDER
+   ===================================================================== */
+const empty = (msg) => `<div class="empty">${msg}</div>`;
+
+function renderHome() {
+  // countdown / in-progress
+  const now = Date.now(), diff = TRIP_START - now, td = tripDay();
+  const wrap = $('#cd-wrap');
+  if (diff > 0) {
+    const d = Math.floor(diff/864e5), h = Math.floor(diff%864e5/36e5), m = Math.floor(diff%36e5/6e4), s = Math.floor(diff%6e4/1e3);
+    const cell = (v, l) => `<div class="cd"><b>${String(v).padStart(2,'0')}</b><span>${l}</span></div>`;
+    wrap.innerHTML = `<p class="small muted" style="margin:12px 0 6px;font-weight:700">距離出發還有</p><div class="countdown" role="timer" aria-label="出發倒數">${cell(d,'日')}${cell(h,'時')}${cell(m,'分')}${cell(s,'秒')}</div>`;
+  } else {
+    wrap.innerHTML = `<p style="margin:12px 0 0;font-weight:800;color:var(--primary-ink)">${td ? `🌴 旅程進行中・Day ${td}` : '旅程已結束，歡迎整理相片與分帳 🎉'}</p>`;
+  }
+  // stats
+  const s = settle(), done = state.checklist.filter(i => i.completed).length;
+  const nextH = state.hotels[0];
+  $('#home-stats').innerHTML = `
+    <div class="stat"><span class="small muted">總支出（折合港幣）</span><b>${money(s.total,'HKD')}</b><span class="small muted">每人約 ${money(s.total/6,'HKD')}</span></div>
+    <div class="stat"><span class="small muted">待辦完成</span><b>${done}/${state.checklist.length}</b><span class="small muted">${nextH ? esc(nextH.name) : '尚未新增酒店'}</span></div>`;
+  // today / preview
+  const day = td || 1, list = state.itinerary.filter(i => +i.day === day).sort(byTime).slice(0, 4);
+  $('#home-today').innerHTML = `
+    <div class="sec-head"><h3 style="font-size:15px">${td ? '📍 今日行程' : '🗓️ 行程預覽'}・Day ${day}</h3>
+      <button class="btn sm" type="button" data-act="goto-day" data-day="${day}">查看全部</button></div>
+    ${list.length ? `<ul style="list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px">${list.map(i =>
+      `<li class="row"><b class="time" style="min-width:56px;font-size:15px">${esc(i.time)}</b><span>${esc(i.title)}</span></li>`).join('')}</ul>` : `<p class="muted small">當天尚未安排行程。</p>`}`;
+  $('#travelers').innerHTML = TRAVELERS.map(t => `<span class="chip">${avatar(t)}${esc(t)}</span>`).join('');
+}
+
+function renderHotels() {
+  const el = $('#hotel-list');
+  if (!state.hotels.length) return el.innerHTML = empty('尚未新增酒店，點「＋ 新增」開始。');
+  el.innerHTML = state.hotels.map(h => {
+    const n = nights(h.checkin, h.checkout);
+    const cls = h.status === '已付款' ? 'ok' : h.status === '待確認' ? 'warn' : '';
+    return `<article class="card" style="display:grid;gap:10px">
+      <div class="row" style="align-items:flex-start">
+        <div class="grow"><h3 style="font-size:17px">${esc(h.name)}</h3><p class="small muted" style="margin:2px 0 0">📍 ${esc(h.address || '布吉島')}</p></div>
+        <span class="badge ${cls}">${esc(h.status || '待確認')}</span>
+      </div>
+      <dl class="kv" style="margin:0">
+        <div><dt>入住</dt><dd>${fmtDT(h.checkin)}</dd></div>
+        <div><dt>退房</dt><dd>${fmtDT(h.checkout)}${n ? `　<span class="badge">${n} 晚</span>` : ''}</dd></div>
+        <div><dt>房價</dt><dd style="color:var(--primary-ink)">${esc(h.price || '—')}</dd></div>
+        <div><dt>預訂編號／備註</dt><dd>${esc(h.notes || '—')}</dd></div>
+      </dl>
+      <div class="row">
+        <a class="btn accent grow" target="_blank" rel="noopener noreferrer" href="${mapLink(h.map || h.name)}">📍 地圖導航</a>
+        <button class="btn" type="button" data-act="edit" data-sec="hotels" data-id="${h.id}">修改</button>
+        <button class="btn danger" type="button" data-act="del" data-sec="hotels" data-id="${h.id}" aria-label="刪除 ${esc(h.name)}">刪除</button>
+      </div></article>`;
+  }).join('');
+}
+
+function renderItinerary() {
+  $('#day-picker').innerHTML = DAYS.map(d =>
+    `<button type="button" data-act="day" data-day="${d.n}" aria-pressed="${d.n === state_.day}">D${d.n}<small>${d.date}（${d.wd}）</small></button>`).join('');
+  const d = DAYS[state_.day - 1];
+  $('#day-title').textContent = `DAY ${d.n}：${d.title}`;
+  const items = state.itinerary.filter(i => +i.day === state_.day).sort(byTime);
+  $('#itinerary-list').innerHTML = items.length ? items.map(i => `
+    <li class="tl card">
+      <div class="row"><span class="time grow">${esc(i.time)}</span><span class="badge">${TRANSPORT[i.transport] || '🚗'} ${esc(i.transport || '')}</span></div>
+      <h3>${esc(i.title)}</h3>${i.desc ? `<p>${esc(i.desc)}</p>` : ''}
+      <div class="actions">
+        <a class="btn sm accent" target="_blank" rel="noopener noreferrer" href="${mapLink(i.map || i.title)}">📍 導航</a>
+        <button class="btn sm" type="button" data-act="edit" data-sec="itinerary" data-id="${i.id}">修改</button>
+        <button class="btn sm danger push" type="button" data-act="del" data-sec="itinerary" data-id="${i.id}" aria-label="刪除 ${esc(i.title)}">刪除</button>
+      </div></li>`).join('') : `<li>${empty('當天尚無行程，點「＋ 新增」或從「備選」加入。')}</li>`;
+}
+
+function renderBackup() {
+  $('#backup-tabs').innerHTML = Object.entries(BACKUP_CAT).map(([k, v]) =>
+    `<button type="button" data-act="sub" data-sub="${k}" aria-pressed="${k === state_.sub}">${v}</button>`).join('');
+  const items = state.backup.filter(b => b.type === state_.sub);
+  $('#backup-list').innerHTML = items.length ? items.map(b => `
+    <article class="card" style="display:grid;gap:6px">
+      <h3 style="font-size:16px">${esc(b.name)}</h3>
+      ${b.desc ? `<p class="muted small" style="margin:0">${esc(b.desc)}</p>` : ''}
+      <span class="small muted">📍 ${esc(b.address || '布吉島')}</span>
+      <div class="actions">
+        <a class="btn sm accent" target="_blank" rel="noopener noreferrer" href="${mapLink(b.map || b.name)}">地圖</a>
+        <button class="btn sm" type="button" data-act="to-itinerary" data-id="${b.id}">加入行程</button>
+        <button class="btn sm" type="button" data-act="edit" data-sec="backup" data-id="${b.id}">修改</button>
+        <button class="btn sm danger push" type="button" data-act="del" data-sec="backup" data-id="${b.id}" aria-label="刪除 ${esc(b.name)}">刪除</button>
+      </div></article>`).join('') : empty('此分類暫時沒有備選地點。');
+}
+
+function renderExpenses() {
+  const s = settle();
+  const hkd = state.expenses.filter(e => e.currency === 'HKD').reduce((a, e) => a + (+e.amount || 0), 0);
+  const thb = state.expenses.filter(e => e.currency === 'THB').reduce((a, e) => a + (+e.amount || 0), 0);
+  $('#expense-summary').innerHTML = `
+    <div class="stats">
+      <div class="stat" style="background:var(--surface-2)"><span class="small muted">港幣支出</span><b style="color:var(--primary-ink)">${money(hkd,'HKD')}</b></div>
+      <div class="stat" style="background:var(--surface-2)"><span class="small muted">泰銖支出</span><b style="color:var(--accent-ink)">${money(thb,'THB')}</b></div>
+    </div>
+    <div class="row" style="margin:12px 0 4px">
+      <label for="rate" class="small muted grow" style="font-weight:700">匯率：1 HKD ＝ ? THB</label>
+      <input id="rate" type="number" inputmode="decimal" step="0.01" min="0.1" value="${state.settings.rate}" style="width:96px" data-rate>
+    </div>
+    <p class="small muted" style="margin:0 0 10px">全部折合港幣 ${money(s.total,'HKD')}，平均每人約 <b style="color:var(--primary-ink)">${money(s.total/6,'HKD')}</b>（只計入各項「分攤成員」）</p>
+    <h3 style="font-size:14px;margin:8px 0 2px">🤝 結算方案</h3>
+    ${s.transfers.length ? s.transfers.map(t => `<div class="split-row"><span><b>${esc(t.from)}</b> → <b>${esc(t.to)}</b></span><b style="color:var(--primary-ink)">${money(t.amt,'HKD')}</b></div>`).join('')
+      : `<p class="small muted" style="margin:4px 0">目前沒有需要結算的款項 🎉</p>`}
+    <details style="margin-top:10px"><summary class="small" style="font-weight:700;cursor:pointer;min-height:32px">每人收支明細</summary>
+      ${TRAVELERS.map(t => `<div class="split-row small"><span>${avatar(t)} ${esc(t)}</span>
+        <span class="muted">先付 ${money(s.paid[t],'HKD')}・應付 ${money(s.share[t],'HKD')}</span>
+        <span class="${s.net[t] >= 0 ? 'pos' : 'neg'}">${s.net[t] >= 0 ? '+' : '−'}${money(Math.abs(s.net[t]),'HKD').replace('HK$ ','')}</span></div>`).join('')}
+    </details>`;
+  const el = $('#expense-list');
+  el.innerHTML = state.expenses.length ? [...state.expenses].reverse().map(e => {
+    const who = e.split?.length ? e.split : TRAVELERS;
+    return `<article class="card exp">
+      <div class="grow"><div style="font-weight:700">${EXP_CAT[e.category] || '🧾'} ${esc(e.title)}</div>
+        <div class="small muted">${esc(e.payer)} 先付・${who.length === 6 ? '6 人均分' : `${who.length} 人分攤（${who.map(esc).join('、')}）`}</div>
+        <div class="actions" style="border:0;padding-top:6px;margin:0">
+          <button class="btn sm" type="button" data-act="edit" data-sec="expenses" data-id="${e.id}">修改</button>
+          <button class="btn sm danger" type="button" data-act="del" data-sec="expenses" data-id="${e.id}" aria-label="刪除 ${esc(e.title)}">刪除</button></div></div>
+      <div class="amt" style="color:${e.currency === 'HKD' ? 'var(--primary-ink)' : 'var(--accent-ink)'}">${money(+e.amount || 0, e.currency)}
+        ${e.currency === 'THB' ? `<div class="small muted" style="font-weight:500">≈ ${money(toHKD(e),'HKD')}</div>` : ''}</div></article>`;
+  }).join('') : empty('還沒有支出紀錄，點「＋ 新增支出」開始記帳。');
+}
+
+function renderChecklist() {
+  const total = state.checklist.length, done = state.checklist.filter(i => i.completed).length;
+  $('#todo-count').textContent = `${done}/${total} 完成`;
+  $('#todo-bar').style.width = total ? `${done / total * 100}%` : '0';
+  $('#todo-bar-wrap').setAttribute('aria-valuenow', total ? Math.round(done / total * 100) : 0);
+  const html = Object.entries(TODO_CAT).map(([cat, ico]) => {
+    const items = state.checklist.filter(i => i.category === cat);
+    if (!items.length) return '';
+    return `<section class="card"><h3 class="small muted" style="margin-bottom:4px">${ico} ${cat}</h3>${items.map(i => `
+      <div class="todo"><input type="checkbox" id="t-${i.id}" data-act="toggle" data-id="${i.id}" ${i.completed ? 'checked' : ''}>
+        <label for="t-${i.id}"><span class="${i.completed ? 'done' : ''}">${esc(i.text)}</span><span class="tag">${esc(i.assignee || '全體')}</span></label>
+        <button class="iconbtn" style="width:40px;height:40px;border:0;background:none" type="button" data-act="del" data-sec="checklist" data-id="${i.id}" aria-label="刪除 ${esc(i.text)}">✕</button></div>`).join('')}</section>`;
+  }).join('');
+  $('#todo-list').innerHTML = html || empty('清單是空的，在上方新增第一個項目。');
+}
+
+function renderAll() { renderHome(); renderHotels(); renderItinerary(); renderBackup(); renderExpenses(); renderChecklist(); }
+
+/* =====================================================================
+   NAVIGATION, DIALOG, TOAST
+   ===================================================================== */
+const ICONS = {
+  home:'<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>',
+  hotel:'<path d="M3 20V8M3 16h18v4M21 16v-4a3 3 0 00-3-3h-7v7"/><circle cx="7" cy="12" r="1.5"/>',
+  itinerary:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  backup:'<path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>',
+  expenses:'<circle cx="12" cy="12" r="10"/><path d="M15 9.5c0-1-1.3-1.5-3-1.5s-3 .6-3 1.8 1.3 1.5 3 1.9 3 .8 3 1.9-1.3 1.9-3 1.9-3-.5-3-1.5M12 6v2M12 16v2"/>',
+  checklist:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
+};
+const TABS = [['home','首頁'],['hotel','住宿'],['itinerary','行程'],['backup','備選'],['expenses','分帳'],['checklist','清單']];
+$('#tabbar').innerHTML = TABS.map(([id, label]) =>
+  `<button type="button" data-act="tab" data-tab="${id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[id === 'hotel' ? 'hotel' : id]}</svg>${label}</button>`).join('');
+
+function switchTab(id) {
+  state_.tab = id;
+  document.querySelectorAll('.tab[id^="tab-"]').forEach(s => s.hidden = s.id !== `tab-${id}`);
+  document.querySelectorAll('#tabbar button').forEach(b => b.setAttribute('aria-current', b.dataset.tab === id ? 'page' : 'false'));
+  scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' });
+}
+
+let toastTimer;
+function toast(msg, undo) {
+  const t = $('#toast'), u = $('#toast-undo');
+  $('#toast-msg').textContent = msg;
+  u.hidden = !undo; u.onclick = () => { undo(); t.classList.remove('show'); };
+  t.classList.add('show'); clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), undo ? 6000 : 3000);
+}
+
+const dlg = $('#dlg'), form = $('#dlg-form');
+function fieldHTML(f, v) {
+  const id = `f_${f.k}`;
+  if (f.t === 'people') return `<fieldset><legend>${f.l}</legend><div class="checks">${TRAVELERS.map(p =>
+    `<label class="check"><input type="checkbox" name="${f.k}" value="${p}" ${(v || []).includes(p) ? 'checked' : ''}>${p}</label>`).join('')}</div></fieldset>`;
+  let inp;
+  if (f.t === 'select') inp = `<select id="${id}" name="${f.k}">${f.opts.map(([val, lb]) => `<option value="${esc(val)}" ${String(val) === String(v) ? 'selected' : ''}>${esc(lb)}</option>`).join('')}</select>`;
+  else if (f.t === 'textarea') inp = `<textarea id="${id}" name="${f.k}" rows="3">${esc(v)}</textarea>`;
+  else inp = `<input id="${id}" name="${f.k}" type="${f.t}" value="${esc(v)}" placeholder="${esc(f.ph || '')}" ${f.req ? 'required' : ''} ${f.t === 'number' ? 'step="any" min="0" inputmode="decimal"' : ''}>`;
+  return `<div class="field${f.half ? ' half' : ''}"><label for="${id}">${f.l}</label>${inp}</div>`;
+}
+function openForm(sec, id = '', preset = {}) {
+  const sc = SCHEMA[sec], item = id ? state[sec].find(i => i.id === id) : null;
+  form.dataset.sec = sec; form.dataset.id = id;
+  $('#dlg-title').textContent = `${id ? '修改' : '新增'}${sc.label}`;
+  $('#dlg-fields').innerHTML = sc.fields.map(f => {
+    const d = typeof f.def === 'function' ? f.def() : f.def;
+    return fieldHTML(f, item ? item[f.k] : (preset[f.k] ?? d ?? ''));
+  }).join('');
+  dlg.showModal();
+}
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const sec = form.dataset.sec, id = form.dataset.id, sc = SCHEMA[sec], fd = new FormData(form), rec = {};
+  for (const f of sc.fields) {
+    rec[f.k] = f.t === 'people' ? fd.getAll(f.k) : f.t === 'number' ? parseFloat(fd.get(f.k)) : String(fd.get(f.k) ?? '').trim();
+  }
+  if (sec === 'itinerary') rec.day = +rec.day;
+  if (sec === 'expenses') {
+    if (!rec.split.length) return toast('請至少選擇一位分攤成員');
+    if (!(rec.amount >= 0)) return toast('請輸入有效金額');
+  }
+  if (id) Object.assign(state[sec].find(i => i.id === id), rec); else state[sec].push({ id: uid(), ...rec });
+  if (sec === 'itinerary') state_.day = rec.day;
+  dlg.close(); persist(sec);
+});
+dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });   // click on backdrop
+
+function removeItem(sec, id) {
+  const before = JSON.stringify(state[sec]);
+  state[sec] = state[sec].filter(i => i.id !== id);
+  persist(sec);
+  toast('已刪除', () => { state[sec] = JSON.parse(before); persist(sec); });
+}
+
+/* =====================================================================
+   EVENTS (single delegated handler — no inline onclick)
+   ===================================================================== */
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const { act, sec, id } = b.dataset;
+  switch (act) {
+    case 'tab': switchTab(b.dataset.tab); break;
+    case 'day': state_.day = +b.dataset.day; renderItinerary(); break;
+    case 'goto-day': state_.day = +b.dataset.day; renderItinerary(); switchTab('itinerary'); break;
+    case 'sub': state_.sub = b.dataset.sub; renderBackup(); break;
+    case 'add': openForm(sec); break;
+    case 'edit': openForm(sec, id); break;
+    case 'del': removeItem(sec, id); break;
+    case 'close-dlg': dlg.close(); break;
+    case 'to-itinerary': { const x = state.backup.find(i => i.id === id); if (x) openForm('itinerary', '', { title: x.name, desc: x.desc, map: x.map }); break; }
+    case 'theme': toggleTheme(); break;
+    case 'share': share(); break;
+    case 'sync-info': toast(cloud ? '已連線：所有人的修改會即時同步。' : '目前只儲存在這部裝置；設定 Firebase 後才能多人同步。'); break;
+    case 'csv': exportCSV(); break;
+  }
+});
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.dataset.act === 'toggle') { const i = state.checklist.find(x => x.id === t.dataset.id); if (i) { i.completed = t.checked; persist('checklist'); } }
+  if (t.matches('[data-rate]')) { const r = parseFloat(t.value); if (r > 0) { state.settings.rate = r; persist('settings'); } else t.value = state.settings.rate; }
+});
+
+/* Checklist add form */
+$('#todo-cat').innerHTML = Object.entries(TODO_CAT).map(([k, v]) => `<option value="${k}">${v} ${k}</option>`).join('');
+$('#todo-who').innerHTML = ['全體', ...TRAVELERS].map(t => `<option>${t}</option>`).join('');
+$('#todo-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const text = $('#todo-text').value.trim(); if (!text) return;
+  state.checklist.push({ id: uid(), text, category: $('#todo-cat').value, assignee: $('#todo-who').value, completed: false });
+  $('#todo-text').value = ''; persist('checklist');
+});
+
+/* Theme */
+function applyThemeIcon() {
+  const dark = document.documentElement.dataset.theme === 'dark' ||
+    (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme:dark)').matches);
+  $('#ico-theme').innerHTML = dark
+    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
+    : '<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>';
+}
+function toggleTheme() {
+  const dark = document.documentElement.dataset.theme === 'dark' ||
+    (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme:dark)').matches);
+  const next = dark ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('phuket_theme', next); } catch {}
+  applyThemeIcon();
+}
+
+/* Share & export */
+async function share() {
+  const url = location.href, data = { title: '布吉島 5日4夜 自由行', url };
+  try {
+    if (navigator.share) { await navigator.share(data); return; }
+    await navigator.clipboard.writeText(url);
+    toast(cloud ? '已複製連結，傳給團員即可共同編輯。' : '已複製連結。注意：未設定雲端同步，對方只會看到初始資料。');
+  } catch (err) { if (err?.name !== 'AbortError') toast('無法自動複製，請手動複製網址列。'); }
+}
+function exportCSV() {
+  const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const rows = [['項目','金額','幣別','折合HKD','先付款人','分類','分攤成員']];
+  state.expenses.forEach(e => rows.push([e.title, e.amount, e.currency, toHKD(e).toFixed(2), e.payer, e.category, (e.split?.length ? e.split : TRAVELERS).join('、')]));
+  const blob = new Blob(['\ufeff' + rows.map(r => r.map(q).join(',')).join('\n')], { type: 'text/csv;charset=utf-8' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'phuket_expenses.csv' });
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+state_.day = tripDay() || 1;
+applyThemeIcon();
+switchTab('home');
+renderAll();
+setInterval(() => { if (!document.hidden && state_.tab === 'home') renderHome(); }, 1000);
+initCloud();
+</script>
+</body>
+</html>
