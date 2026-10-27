@@ -612,7 +612,7 @@ function renderItinerary() {
   $('#day-picker').innerHTML = DAYS.map(d =>
     `<button type="button" data-act="day" data-day="${d.n}" aria-pressed="${d.n === state_.day}">D${d.n}<small>${d.date}（${d.wd}）</small></button>`).join('');
   const d = DAYS[state_.day - 1];
-  $('#day-title').textContent = `DAY ${d.n}：${d.title}`;
+  $('#day-title').textContent = `DAY ${d.n}・${d.date}（${d.wd}）`;
   const items = state.itinerary.filter(i => +i.day === state_.day).sort(byTime);
   $('#itinerary-list').innerHTML = items.length ? items.map(i => `
     <li class="tl card">
