@@ -572,7 +572,7 @@ function renderHome() {
   const nextH = state.hotels[0];
   $('#home-stats').innerHTML = `
     <div class="stat"><span class="small muted">總支出（折合港幣）</span><b>${money(s.total,'HKD')}</b><span class="small muted">每人約 ${money(s.total/6,'HKD')}</span></div>
-    <div class="stat"><span class="small muted">待辦完成</span><b>${done}/${state.checklist.length}</b><span class="small muted">${nextH ? esc(nextH.name) : '尚未新增酒店'}</span></div>`;
+    <div class="stat"><span class="small muted">待辦完成</span><b>${done}/${state.checklist.length}</b><span class="small muted">${state.checklist.length ? (done === state.checklist.length ? '全部完成 🎉' : `尚餘 ${state.checklist.length - done} 項`) : '未有待辦項目'}</span></div>`;
   // today / preview
   const day = td || 1, list = state.itinerary.filter(i => +i.day === day).sort(byTime).slice(0, 4);
   $('#home-today').innerHTML = `
